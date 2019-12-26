@@ -1,0 +1,5 @@
+package Constant
+
+const HTTP_STATUS_OKE = 200
+const HTTP_STATUS_CREATED = 201
+const HTTP_STATUS_BAD_REQUEST = 400
