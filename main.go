@@ -6,45 +6,26 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	// "net/http"
-	"gin.api/model"
 	"gin.api/constant"
+	"gin.api/business"
 )
 
 
 func main() {
 	fmt.Println("hello world")
 	r := gin.Default()
-	r.GET("api/v1" , getData)
-	r.GET("api/v1/:name" , getDataParams)
-	r.POST("api/v1/" , createData)
-	r.Run()
-}
-
-func getData(c *gin.Context) {
-	c.JSON(Constant.HTTP_STATUS_OKE, model.Response{
-		Message: "Api is working",
-		StatusCode: Constant.HTTP_STATUS_OKE,
-	})
-}
-
-func getDataParams(c *gin.Context) {
-	name := c.Param("name")
-	c.JSON(Constant.HTTP_STATUS_OKE , model.Response{
-		Message: "Hello " + name,
-		StatusCode: Constant.HTTP_STATUS_OKE,
-	})
-}
-
-func createData(c *gin.Context) {
-	var customer model.Customer
-	if err := c.ShouldBindJSON(&customer); err != nil {
-		c.JSON(Constant.HTTP_STATUS_BAD_REQUEST , model.Response{
-			Message: "Bad Request",
-			StatusCode: Constant.HTTP_STATUS_BAD_REQUEST,
-		})
+	customerController := r.Group(Constant.API_URL + "customers/")
+	{
+		customerController.GET("" , business.GetAllCustomer)
+		customerController.GET(":name" , business.GetDetailCustomer)
+		customerController.POST("" , business.CreateCustomer)
 	}
-	c.JSON(Constant.HTTP_STATUS_CREATED , model.Response{
-		Message: "Hello " + customer.Name,
-		StatusCode: Constant.HTTP_STATUS_CREATED,
-	})
+
+	bookController := r.Group(Constant.API_URL + "books/")
+	{
+		bookController.GET("" , business.GetAllBook)
+		bookController.GET(":name" , business.GetDetailBook)
+		bookController.POST("" , business.CreateBook)
+	}
+	r.Run()
 }
