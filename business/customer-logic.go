@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gin.api/model"
 	"gin.api/constant"
+	"gin.api/database"
 )
 func GetAllCustomer(c *gin.Context) {
 	c.JSON(Constant.HTTP_STATUS_OKE, model.Response{
@@ -28,8 +29,15 @@ func CreateCustomer(c *gin.Context) {
 			StatusCode: Constant.HTTP_STATUS_BAD_REQUEST,
 		})
 	}
+	_,errorInsert := database.AddCustomer(customer)
+	if(errorInsert != nil) {
+		c.JSON(Constant.HTTP_STATUS_BAD_REQUEST , model.Response{
+			Message: errorInsert.Error(),
+			StatusCode: Constant.HTTP_STATUS_BAD_REQUEST,
+		})
+	}
 	c.JSON(Constant.HTTP_STATUS_CREATED , model.Response{
-		Message: "Hello " + customer.Name,
+		Message: "Add Success",
 		StatusCode: Constant.HTTP_STATUS_CREATED,
 	})
 }
