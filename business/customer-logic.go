@@ -29,7 +29,16 @@ func CreateCustomer(c *gin.Context) {
 			StatusCode: Constant.HTTP_STATUS_BAD_REQUEST,
 		})
 	}
-	_,errorInsert := database.AddCustomer(customer)
+
+	seqCount , errSeqCount := database.GetSequence("customer")
+	if errSeqCount != nil {
+		c.JSON(Constant.HTTP_STATUS_BAD_REQUEST , model.Response{
+			Message: errSeqCount.Error(),
+			StatusCode: Constant.HTTP_STATUS_BAD_REQUEST,
+		})
+	}
+	
+	_,errorInsert := database.AddCustomer(customer , seqCount)
 	if(errorInsert != nil) {
 		c.JSON(Constant.HTTP_STATUS_BAD_REQUEST , model.Response{
 			Message: errorInsert.Error(),
