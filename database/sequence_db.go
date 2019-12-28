@@ -17,7 +17,7 @@ func GetSequence(typeSequence string) (int , error) {
 	if err != nil {
 		return 0, errors.New(err.Error())
 	}
-	updateSeq , _ := UpdateSequence("customer" , 1)
+	updateSeq , _ := UpdateSequence(typeSequence , 1)
 	if !updateSeq {
 		return 0, errors.New("Update fail")
 	}
@@ -39,7 +39,7 @@ func UpdateSequence(typeSequence string , value int) (bool , error) {
 	err := sequenceCollection.FindOneAndUpdate(context.TODO() , filter , updateBody).Decode(&sequence)
 
 	if err != nil {
-		return false , errors.New("Updatw fail")
+		return false , errors.New("Update fail")
 	}
 
 	return true , nil

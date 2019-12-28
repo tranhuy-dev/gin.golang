@@ -17,14 +17,14 @@ func main() {
 	customerController := r.Group(Constant.API_URL + "customers/")
 	{
 		customerController.GET("" , business.GetAllCustomer)
-		customerController.GET(":name" , business.GetDetailCustomer)
+		customerController.GET(":id" , business.GetDetailCustomer)
 		customerController.POST("" , business.CreateCustomer)
 	}
 
 	bookController := r.Group(Constant.API_URL + "books/")
 	{
 		bookController.GET("" , business.GetAllBook)
-		bookController.GET(":name" , business.GetDetailBook)
+		bookController.GET(":id" , business.GetDetailBook)
 		bookController.POST("" , business.CreateBook)
 	}
 	r.Run()
